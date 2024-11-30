@@ -1,0 +1,7 @@
+include:
+  - path: 
+      # - ./docker-compose.prod.yaml
+      - ./docker-compose.dev.yaml
+    env_file:
+      - ./frontend/.env
+      - ./backend/.env

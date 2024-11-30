@@ -1,0 +1,10 @@
+@use "./shared/ui/variables";
+
+.main {
+    min-height: 100vh;
+    background-color: variables.$color-background;
+}
+
+.page {
+    padding-top: 5rem;
+}

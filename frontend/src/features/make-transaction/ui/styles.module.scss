@@ -1,0 +1,72 @@
+@use "@/shared/ui/mixins";
+@use "@/shared/ui/variables";
+
+.field-wrapper {
+    position: relative;
+
+    margin-bottom: 14px;
+}
+
+.icon {
+    @include mixins.icon-wrapper;
+}
+
+.field-error {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateX(calc(100% + 15px)) translateY(-50%);
+    color: #e62c2c;
+}
+
+.field-error::first-letter {
+    text-transform: uppercase;
+}
+
+.form-wrapper {
+    margin: 0 auto;
+    width: 320px;
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        @include mixins.input-base(0.7rem 2rem);
+    }
+
+    textarea {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    @media screen and (min-width: 648px) {
+        width: 460px;
+    }
+}
+
+.datepicker-input {
+    position: relative;
+
+    input {
+        width: 100%;
+
+        @include mixins.input-base(0.7rem 0 0.7rem 2rem);
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #9ca3af;
+    }
+
+    &__submit-button {
+        width: 100%;
+        @include mixins.button;
+    }
+}
+
+.datepicker-wrapper_block {
+    display: block;
+}

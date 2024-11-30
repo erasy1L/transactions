@@ -1,0 +1,35 @@
+@use "./variables.scss";
+
+@mixin input-base($padding) {
+    padding: $padding;
+
+    font-size: 0.9rem;
+
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-shadow: variables.$shadow-sm;
+}
+
+@mixin button {
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    background-color: variables.$color-primary;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+
+    box-shadow: variables.$shadow-md;
+
+    &:hover {
+        background-color: variables.$color-primary-hover;
+    }
+}
+
+@mixin icon-wrapper {
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #9ca3af;
+}

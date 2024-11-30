@@ -1,0 +1,63 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: dev  
+    ports:
+      - "5173:5173" 
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/usr/src/app/frontend 
+      - /usr/src/app/frontend/node_modules
+    env_file: 
+      - ./frontend/.env
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./backend:/usr/src/app/backend
+      - /usr/src/app/backend/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: 
+      - ./backend/.env
+    command: ["npm", "run", "start:dev"]
+  dbmate: 
+    image: amacneil/dbmate
+    command: ["up"]
+    volumes:
+      - ./backend/migrations/postgres:/migrations/postgres
+    environment:
+      - DATABASE_URL=postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:5432/${DATABASE_NAME}?sslmode=disable
+      - DBMATE_MIGRATIONS_DIR=migrations/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: 
+      - ./backend/.env
+  db:
+    image: postgres:16.3
+    ports:
+      - "5432:5432"
+    env_file: 
+      - ./backend/.env
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    healthcheck:
+      test:  pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 3s
+      timeout: 4m
+      retries: 5
+    restart: always
